@@ -1,0 +1,22 @@
+{
+  "name": "npm-sqlite",
+  "version": "0.0.1",
+  "description": "sqlite wrapper",
+  "main": "index.js",
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/garbagemza/npm-sqlite.git"
+  },
+  "author": "garbagemza",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/garbagemza/npm-sqlite/issues"
+  },
+  "homepage": "https://github.com/garbagemza/npm-sqlite#readme",
+  "dependencies": {
+    "better-sqlite3": "^7.5.3"
+  }
+}
