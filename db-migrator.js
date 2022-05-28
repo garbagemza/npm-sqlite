@@ -8,31 +8,31 @@ const dbMigrator = function(options) {
 
     const currentVersion = currentDBVersion(db)
 
-    logger(`npm-sqlite.dbmigrator.current.db.version:  ${currentVersion}`)
-    logger(`npm-sqlite.dbmigrator.required.db.version: ${targetVersion}`)
+    logger(`npm-sqlite.migrator.current.db.version:  ${currentVersion}`)
+    logger(`npm-sqlite.migrator.required.db.version: ${targetVersion}`)
 
     // get required files
-    logger(`npm-sqlite.dbmigrator.required.files`)
+    logger(`npm-sqlite.migrator.required.files`)
     const requiredFiles = getRequiredFiles(workdir, currentVersion, targetVersion)
     requiredFiles.forEach(element => {
         logger(` ${element}`)
     });
 
     // make sure the required files in workdir/migration/* exist
-    logger(`npm-sqlite.dbmigrator.inspect.files`)
+    logger(`npm-sqlite.migrator.inspect.files`)
     inspectFiles(requiredFiles)
 
     // load all migration files into memory
-    logger(`npm-sqlite.dbmigrator.load.files`)
+    logger(`npm-sqlite.migrator.load.files`)
     const files = loadFiles(requiredFiles)
     files.forEach(file => {
-        logger(`npm-sqlite.dbmigrator.file.begin`)
+        logger(`npm-sqlite.migrator.file.begin`)
         logger(`  ${file}`)
-        logger(`npm-sqlite.dbmigrator.file.end`)
+        logger(`npm-sqlite.migrator.file.end`)
     })
 
     // split files into statements
-    logger(`npm-sqlite.dbmigrator.make.statements`)
+    logger(`npm-sqlite.migrator.make.statements`)
     const statements = makeStatements(files)
     statements.forEach(statement => {
         logger(`-  ${statement}`)
@@ -40,17 +40,17 @@ const dbMigrator = function(options) {
 
     if (statements.length > 0) {
         // add target version statement
-        logger(`npm-sqlite.dbmigrator.add.target.version`)
+        logger(`npm-sqlite.migrator.add.target.version`)
         statements.push(`PRAGMA user_version = ${targetVersion}`)            
     }
 
     // prepare statements
-    logger(`npm-sqlite.dbmigrator.prepare.statements`)
+    logger(`npm-sqlite.migrator.prepare.statements`)
     const preparedStatements = prepareStatements(db, statements)
 
     if (preparedStatements.length > 0) {
         // execute transaction
-        logger(`npm-sqlite.dbmigrator.execute.transactions`)
+        logger(`npm-sqlite.migrator.execute.transactions`)
         const transaction = db.transaction((stmts) => {
             for (const stmt of stmts) stmt.run()
         })
