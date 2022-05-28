@@ -48,12 +48,14 @@ const dbMigrator = function(options) {
     logger(`npm-sqlite.dbmigrator.prepare.statements`)
     const preparedStatements = prepareStatements(db, statements)
 
-    // execute transaction
-    logger(`npm-sqlite.dbmigrator.execute.transactions`)
-    const transaction = db.transaction((stmts) => {
-        for (const stmt of stmts) stmt.run()
-    })
-    transaction(preparedStatements)
+    if (preparedStatements.length > 0) {
+        // execute transaction
+        logger(`npm-sqlite.dbmigrator.execute.transactions`)
+        const transaction = db.transaction((stmts) => {
+            for (const stmt of stmts) stmt.run()
+        })
+        transaction(preparedStatements)        
+    }
 }
 
 const currentDBVersion = function(db) {
