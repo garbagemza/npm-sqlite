@@ -42,13 +42,16 @@ const dbMigrator = function(options) {
     logger(`npm-sqlite.dbmigrator.add.target.version`)
     statements.push(`PRAGMA user_version = ${targetVersion}`)
 
-    // execute transaction
+    // prepare statements
+    logger(`npm-sqlite.dbmigrator.prepare.statements`)
+    const preparedStatements = prepareStatements(db, statements)
 
+    // execute transaction
     logger(`npm-sqlite.dbmigrator.execute.transactions`)
     const transaction = db.transaction((stmts) => {
         for (const stmt of stmts) stmt.run()
     })
-    transaction(statements)
+    transaction(preparedStatements)
 }
 
 const currentDBVersion = function(db) {
@@ -88,6 +91,12 @@ const makeStatements = function(files) {
         statements.push.apply(statements, stmts)
     })
     return statements
+}
+
+const prepareStatements = function(db, statements) {
+    return statements.map(function(stmt) {
+        return db.prepare(stmt)
+    })
 }
 
 module.exports = dbMigrator
