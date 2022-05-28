@@ -1,3 +1,4 @@
+const fs = require('fs')
 
 const dbMigrator = function(options) {
     const db = options.database
@@ -18,6 +19,9 @@ const dbMigrator = function(options) {
     });
 
     // make sure the required files in workdir/migration/* exist
+    logger(`npm-sqlite.dbmigrator.inspect.files`)
+    inspectFiles(requiredFiles)
+
     // load all migration files into memory
     // split files into statements
     // add target version statement
@@ -53,4 +57,10 @@ const getRequiredFiles = function(workdir, currentVersion, targetVersion) {
     return files
 }
 
+const inspectFiles = function(files) {
+    files.forEach(function(file) {
+        if (!fs.existsSync(file))
+            throw Error(`file not found: ${file}`)
+    })
+}
 module.exports = dbMigrator
