@@ -26,10 +26,18 @@ const dbMigrator = function(options) {
     logger(`npm-sqlite.dbmigrator.load.files`)
     const files = loadFiles(requiredFiles)
     files.forEach(file => {
+        logger(`npm-sqlite.dbmigrator.file.begin`)
         logger(`  ${file}`)
+        logger(`npm-sqlite.dbmigrator.file.end`)
     })
 
     // split files into statements
+    logger(`npm-sqlite.dbmigrator.make.statements`)
+    const statements = makeStatements(files)
+    statements.forEach(statement => {
+        logger(`  ${statement}`)
+    })
+
     // add target version statement
     // execute transaction
 
@@ -77,6 +85,15 @@ const loadFiles = function(filenames) {
         files.push(data)
     })
     return files
+}
+
+const makeStatements = function(files) {
+    const statements = []
+    files.forEach(function(file) {
+        const stmts = file.split(`;`)
+        statements.push(stmts)
+    })
+    return statements
 }
 
 module.exports = dbMigrator
