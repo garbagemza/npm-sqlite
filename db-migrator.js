@@ -89,8 +89,13 @@ const makeStatements = function(files) {
         const sanitized = file.replace(/(\r\n|\n|\r)/gm, "")
         const stmts = sanitized.split(`;`)
         statements.push.apply(statements, stmts)
+
     })
-    return statements
+
+    const filtered = statements.filter(function (stmt) {
+        return stmt !== undefined && stmt != null && stmt != '';
+    })
+    return filtered
 }
 
 const prepareStatements = function(db, statements) {
