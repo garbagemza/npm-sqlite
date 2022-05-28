@@ -90,7 +90,7 @@ const loadFiles = function(filenames) {
 const makeStatements = function(files) {
     const statements = []
     files.forEach(function(file) {
-        const stanitized = file.replace(/(\r\n|\n|\r)/gm, "")
+        const sanitized = file.replace(/(\r\n|\n|\r)/gm, "")
         const stmts = sanitized.split(`;`)
         statements.push(stmts)
     })
