@@ -38,9 +38,11 @@ const dbMigrator = function(options) {
         logger(`-  ${statement}`)
     })
 
-    // add target version statement
-    logger(`npm-sqlite.dbmigrator.add.target.version`)
-    statements.push(`PRAGMA user_version = ${targetVersion}`)
+    if (statements.length > 0) {
+        // add target version statement
+        logger(`npm-sqlite.dbmigrator.add.target.version`)
+        statements.push(`PRAGMA user_version = ${targetVersion}`)            
+    }
 
     // prepare statements
     logger(`npm-sqlite.dbmigrator.prepare.statements`)
