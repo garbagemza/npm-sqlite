@@ -3,6 +3,7 @@ const dbMigrator = function(options) {
     const db = options.database
     const logger = options.logger
     const targetVersion = options.targetVersion
+    const workdir = options.workdir
 
     const currentVersion = currentDBVersion(db)
 
@@ -10,8 +11,8 @@ const dbMigrator = function(options) {
     logger(`npm-sqlite.dbmigrator.required.db.version: ${targetVersion}`)
 
     // get required files
-    const requiredFiles = getRequiredFiles(currentVersion, targetVersion)
     logger(`npm-sqlite.dbmigrator.required.files`)
+    const requiredFiles = getRequiredFiles(workdir, currentVersion, targetVersion)
     requiredFiles.forEach(element => {
         logger(` ${element}`)
     });
@@ -42,6 +43,14 @@ const prepareStatements = function(desiredVersion, db) {
 const currentDBVersion = function(db) {
     const row = db.prepare('PRAGMA user_version;').get()
     return row.user_version
+}
+
+const getRequiredFiles = function(workdir, currentVersion, targetVersion) {
+    const files = []
+    for (let index = currentVersion; index < targetVersion; index++) {
+        files.push(`${workdir}/migration/${index}.sqlite`)
+    }
+    return files
 }
 
 module.exports = dbMigrator
