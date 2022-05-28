@@ -95,6 +95,7 @@ const makeStatements = function(files) {
 
 const prepareStatements = function(db, statements) {
     return statements.map(function(stmt) {
+        console.log(stmt)
         return db.prepare(stmt)
     })
 }
