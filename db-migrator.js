@@ -23,6 +23,12 @@ const dbMigrator = function(options) {
     inspectFiles(requiredFiles)
 
     // load all migration files into memory
+    logger(`npm-sqlite.dbmigrator.load.files`)
+    const files = loadFiles(requiredFiles)
+    files.forEach(file => {
+        logger(`  ${file}`)
+    })
+
     // split files into statements
     // add target version statement
     // execute transaction
@@ -63,4 +69,14 @@ const inspectFiles = function(files) {
             throw Error(`file not found: ${file}`)
     })
 }
+
+const loadFiles = function(filenames) {
+    const files = []
+    filenames.forEach(function(filename) {
+        const data = fs.readFileSync(filename, 'utf8');
+        files.push(data)
+    })
+    return files
+}
+
 module.exports = dbMigrator
