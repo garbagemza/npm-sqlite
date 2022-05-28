@@ -35,7 +35,7 @@ const dbMigrator = function(options) {
     logger(`npm-sqlite.dbmigrator.make.statements`)
     const statements = makeStatements(files)
     statements.forEach(statement => {
-        logger(`  ${statement}`)
+        logger(`-  ${statement}`)
     })
 
     // add target version statement
