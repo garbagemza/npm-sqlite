@@ -92,7 +92,7 @@ const makeStatements = function(files) {
     files.forEach(function(file) {
         const sanitized = file.replace(/(\r\n|\n|\r)/gm, "")
         const stmts = sanitized.split(`;`)
-        statements.push(stmts)
+        statements.push.apply(statements, stmts)
     })
     return statements
 }
