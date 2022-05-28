@@ -39,23 +39,16 @@ const dbMigrator = function(options) {
     })
 
     // add target version statement
+    logger(`npm-sqlite.dbmigrator.add.target.version`)
+    statements.push(`PRAGMA user_version = ${targetVersion}`)
+
     // execute transaction
 
-    // const transaction = db.transaction((stmts) => {
-    //     for (const stmt of stmts) stmt.run()
-    // })
-
-    // for (let index = currentVersion; index < targetVersion; index++) {
-    //     logger(`npm-sqlite.dbmigrator.migrating.db from ${index} to ${index + 1}`)
-    //     const statements = prepareStatements(index + 1, db)
-    //     transaction(statements)
-    // }
-}
-const prepareStatements = function(desiredVersion, db) {
-    return [
-        db.prepare('CREATE TABLE deploys (id INTEGER PRIMARY KEY, uuid STRING NOT NULL, issuedAt STRING NOT NULL);'),
-        db.prepare(`PRAGMA user_version = ${desiredVersion}`)
-    ]
+    logger(`npm-sqlite.dbmigrator.execute.transactions`)
+    const transaction = db.transaction((stmts) => {
+        for (const stmt of stmts) stmt.run()
+    })
+    transaction(statements)
 }
 
 const currentDBVersion = function(db) {
