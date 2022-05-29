@@ -63,10 +63,10 @@ const currentDBVersion = function(db) {
     return row.user_version
 }
 
-const getRequiredFiles = function(workdir, currentVersion, targetVersion) {
+const getRequiredFiles = function(migrationDir, currentVersion, targetVersion) {
     const files = []
     for (let index = currentVersion; index < targetVersion; index++) {
-        files.push(`${workdir}/migration/${index}.sqlite`)
+        files.push(`${migrationDir}/${index}.sqlite`)
     }
     return files
 }
