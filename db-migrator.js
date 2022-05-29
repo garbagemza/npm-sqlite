@@ -4,7 +4,7 @@ const dbMigrator = function(options) {
     const db = options.database
     const logger = options.logger
     const targetVersion = options.targetVersion
-    const workdir = options.workdir
+    const migrationDir = options.migrationDir
 
     const currentVersion = currentDBVersion(db)
 
@@ -13,7 +13,7 @@ const dbMigrator = function(options) {
 
     // get required files
     logger(`npm-sqlite.migrator.required.files`)
-    const requiredFiles = getRequiredFiles(workdir, currentVersion, targetVersion)
+    const requiredFiles = getRequiredFiles(migrationDir, currentVersion, targetVersion)
     requiredFiles.forEach(element => {
         logger(` ${element}`)
     });
