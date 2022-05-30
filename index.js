@@ -21,7 +21,7 @@ const configure = function(options) {
         migrationDir: options.migrationDir
     }
     dbMigrator(migrationOptions)
-
+    return database
 }
 
 module.exports = {
