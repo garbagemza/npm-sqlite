@@ -1,5 +1,9 @@
-const { configure } = require('./lib')
+const {
+    configure,
+    runInTransaction
+} = require('./lib')
 
 module.exports = {
-    configure: configure
+    configure,
+    runInTransaction
 }
