@@ -11,6 +11,7 @@ beforeAll(() => {
     fs.mkdirSync('./tmp')
     fs.mkdirSync('./tmp/upgrade1')
     fs.mkdirSync('./tmp/upgrade2')
+    fs.mkdirSync('./tmp/upgrade3')
 })
   
 afterAll(() => {
@@ -48,4 +49,18 @@ test('should not find upgrade files', () => {
     }
     const t = () => configure(options)
     expect(t).toThrow()
+})
+
+test('should upgrade by 1 step at once', () => {
+    fs.writeFileSync('./tmp/upgrade3/0.sqlite', 'CREATE TABLE hello (id INTEGER PRIMARY KEY);')
+    fs.writeFileSync('./tmp/upgrade3/1.sqlite', 'ALTER TABLE hello ADD COLUMN text TEXT NOT NULL;')
+
+    const options = {
+        workdir: './tmp',
+        migrationDir: './tmp/upgrade3',
+        databaseName: 'doublejump',
+        databaseVersion: 2,
+    }
+    const t = () => configure(options)
+    expect(t).not.toThrow()
 })
