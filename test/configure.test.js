@@ -45,7 +45,6 @@ test('should not find upgrade files', () => {
         migrationDir: './tmp/upgrade2',
         databaseName: 'lostmigration',
         databaseVersion: 1,
-        verbose: console.log
     }
     const t = () => configure(options)
     expect(t).toThrow()
